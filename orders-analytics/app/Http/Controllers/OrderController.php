@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Models\Order;
 
 class OrderController extends Controller
 {
@@ -16,10 +17,11 @@ class OrderController extends Controller
             'price' => 'required|numeric|min:0',
             'order_date' => 'required|date',
         ]);
+        // DB::table('orders')->insert($validated);
+     
+        $order=Order::create($validated);
 
-        DB::table('orders')->insert($validated);
-
-        return response()->json(['message' => 'Order added successfully'], 201);
+        return response()->json(['message' => 'Order added successfully', 'order saved'=> $order], 201);
     }
 
     public function analytics()
