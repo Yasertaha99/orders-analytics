@@ -20,6 +20,11 @@ class OrderController extends Controller
         // DB::table('orders')->insert($validated);
      
         $order=Order::create($validated);
+        Broadcast::channel('orders')->broadcast([
+            'event' => 'NewOrder',
+            'data' =>$order,
+        ]);
+    
 
         return response()->json(['message' => 'Order added successfully', 'order saved'=> $order], 201);
     }
